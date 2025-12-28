@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>For You 🌷</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --tulip-color-1: #ff6b9d;
+            --tulip-color-2: #ff8fab;
+            --tulip-shadow: rgba(255, 107, 157, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #ffeef7 0%, #ffd6e8 50%, #ffc4e0 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 182, 193, 0.6);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px 20px;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(255, 182, 193, 0.2);
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #d63384;
+            margin-bottom: 25px;
+            font-size: clamp(2rem, 8vw, 3rem);
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(214, 51, 132, 0.2);
+        }
+
+        .button {
+            background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 100%);
+            color: white;
+            border: none;
+            padding: 16px 36px;
+            font-size: 1.1em;
+            font-weight: 500;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+            margin-bottom: 25px;
+            min-height: 44px;
+            min-width: 120px;
+            touch-action: manipulation;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
+        }
+
+        .button:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .button.hidden {
+            display: none;
+        }
+
+        .tulip-container {
+            display: none;
+            margin-top: 25px;
+            animation: fadeInScale 1s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 10;
+        }
+
+        .tulip-container.show {
+            display: block;
+        }
+
+        .tulip-container.grabbed {
+            animation: followHand 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes followHand {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            50% {
+                transform: translate(-30px, -50px) scale(0.8);
+            }
+            100% {
+                transform: translate(-100px, -150px) scale(0.3);
+                opacity: 0;
+            }
+        }
+
+        .tulip {
+            width: 180px;
+            height: 280px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .stem {
+            width: 7px;
+            height: 140px;
+            background: linear-gradient(to right, #2d5016, #4a7c2a);
+            margin: 0 auto;
+            border-radius: 4px;
+            position: relative;
+            top: 90px;
+        }
+
+        .leaf {
+            width: 35px;
+            height: 55px;
+            background: #4a7c2a;
+            border-radius: 0 100% 0 100%;
+            position: absolute;
+        }
+
+        .leaf-left {
+            left: 50%;
+            top: 170px;
+            transform: translateX(-55px) rotate(-20deg);
+        }
+
+        .leaf-right {
+            right: 50%;
+            top: 185px;
+            transform: translateX(55px) rotate(20deg);
+        }
+
+        .flower {
+            width: 110px;
+            height: 110px;
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+        }
+
+        .petal {
+            width: 45px;
+            height: 65px;
+            background: linear-gradient(135deg, var(--tulip-color-1), var(--tulip-color-2));
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+            box-shadow: 0 2px 10px var(--tulip-shadow);
+            transition: all 0.3s ease;
+        }
+
+        .petal-1 {
+            top: 18px;
+            left: 32px;
+            transform: rotate(-20deg);
+        }
+
+        .petal-2 {
+            top: 18px;
+            right: 32px;
+            transform: rotate(20deg);
+        }
+
+        .petal-3 {
+            top: 28px;
+            left: 50%;
+            transform: translateX(-50%) rotate(0deg);
+        }
+
+        .petal-4 {
+            top: 38px;
+            left: 18px;
+            transform: rotate(-40deg);
+        }
+
+        .petal-5 {
+            top: 38px;
+            right: 18px;
+            transform: rotate(40deg);
+        }
+
+        .petal-6 {
+            top: 48px;
+            left: 50%;
+            transform: translateX(-50%) rotate(0deg);
+        }
+
+        .center {
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 50%;
+            position: absolute;
+            top: 55px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .take-button {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .take-button.show {
+            display: block;
+            animation: fadeInUp 0.6s ease-out 0.5s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hand-container {
+            position: fixed;
+            bottom: -200px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 80px;
+            height: 120px;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .hand-container.approaching {
+            animation: approachTulip 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .hand-container.grabbing {
+            animation: grabTulip 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .hand-container.retreating {
+            animation: retreatWithTulip 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes approachTulip {
+            0% {
+                bottom: -200px;
+                transform: translateX(50%) rotate(0deg);
+            }
+            100% {
+                bottom: 45%;
+                transform: translateX(50%) rotate(-10deg);
+            }
+        }
+
+        @keyframes grabTulip {
+            0% {
+                bottom: 45%;
+                transform: translateX(50%) rotate(-10deg) scale(1);
+            }
+            50% {
+                transform: translateX(50%) rotate(-5deg) scale(1.1);
+            }
+            100% {
+                bottom: 45%;
+                transform: translateX(50%) rotate(-8deg) scale(1);
+            }
+        }
+
+        @keyframes retreatWithTulip {
+            0% {
+                bottom: 45%;
+                transform: translateX(50%) rotate(-8deg);
+            }
+            100% {
+                bottom: -200px;
+                right: 20%;
+                transform: translateX(0) rotate(-15deg);
+            }
+        }
+
+        .hand {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .hand-palm {
+            width: 50px;
+            height: 60px;
+            background: linear-gradient(135deg, #ffdbac, #f4c2a1);
+            border-radius: 50% 50% 40% 40%;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .hand-thumb {
+            width: 20px;
+            height: 35px;
+            background: linear-gradient(135deg, #ffdbac, #f4c2a1);
+            border-radius: 50% 50% 50% 40%;
+            position: absolute;
+            bottom: 25px;
+            right: 35px;
+            transform: rotate(-30deg);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        }
+
+        .hand-finger {
+            width: 15px;
+            height: 40px;
+            background: linear-gradient(135deg, #ffdbac, #f4c2a1);
+            border-radius: 50% 50% 50% 50%;
+            position: absolute;
+            bottom: 50px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        }
+
+        .hand-finger-1 {
+            left: 15px;
+            transform: rotate(-5deg);
+        }
+
+        .hand-finger-2 {
+            left: 32px;
+            transform: rotate(0deg);
+        }
+
+        .hand-finger-3 {
+            left: 48px;
+            transform: rotate(5deg);
+        }
+
+        .hand-container.grabbing .hand-finger {
+            animation: closeFingers 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes closeFingers {
+            0% {
+                transform: rotate(var(--initial-rot, 0deg)) translateY(0);
+            }
+            100% {
+                transform: rotate(calc(var(--initial-rot, 0deg) + 30deg)) translateY(10px);
+            }
+        }
+
+        .romantic-message {
+            display: none;
+            margin-top: 30px;
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(1.5rem, 6vw, 2.5rem);
+            color: #d63384;
+            animation: fadeInScale 1s ease-out;
+        }
+
+        .romantic-message.show {
+            display: block;
+        }
+
+        /* Minigame Styles */
+        .minigame-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffeef7 0%, #ffd6e8 50%, #ffc4e0 100%);
+            z-index: 200;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+            padding-top: 60px;
+        }
+
+        .minigame-container.show {
+            display: flex;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .game-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2rem, 8vw, 3rem);
+            color: #d63384;
+            margin-bottom: 10px;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.2em;
+            color: #d63384;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .game-area {
+            width: 100%;
+            max-width: 400px;
+            height: 60vh;
+            min-height: 400px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
+            touch-action: none;
+            border: 2px solid rgba(255, 182, 193, 0.3);
+        }
+
+        .falling-petal {
+            position: absolute;
+            width: 30px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--tulip-color-1), var(--tulip-color-2));
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            pointer-events: none;
+            box-shadow: 0 2px 8px var(--tulip-shadow);
+            animation: fall linear;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .catch-effect {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            pointer-events: none;
+            animation: sparkle 0.6s ease-out forwards;
+        }
+
+        @keyframes sparkle {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffd700;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #ffd700;
+        }
+
+        .score-popup {
+            position: absolute;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2em;
+            color: #d63384;
+            font-weight: bold;
+            pointer-events: none;
+            animation: scoreFloat 1s ease-out forwards;
+            text-shadow: 0 2px 10px rgba(214, 51, 132, 0.3);
+        }
+
+        @keyframes scoreFloat {
+            0% {
+                transform: translateY(0) scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-50px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .game-end {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            max-width: 400px;
+            width: 100%;
+            margin-top: 20px;
+            animation: fadeInScale 0.8s ease-out;
+        }
+
+        .game-end.show {
+            display: block;
+        }
+
+        .final-score {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2rem, 8vw, 3rem);
+            color: #d63384;
+            margin-bottom: 15px;
+        }
+
+        .final-message {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1em;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .play-again-button {
+            background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 100%);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            font-size: 1em;
+            font-weight: 500;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+            min-height: 44px;
+            touch-action: manipulation;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .play-again-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 15px;
+            }
+
+            .tulip {
+                width: 150px;
+                height: 240px;
+            }
+
+            .flower {
+                width: 90px;
+                height: 90px;
+            }
+
+            .petal {
+                width: 38px;
+                height: 55px;
+            }
+
+            .game-area {
+                min-height: 350px;
+            }
+        }
+
+        @media (max-height: 600px) {
+            .game-area {
+                min-height: 300px;
+                height: 50vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <h1>For You 🌷</h1>
+        <button class="button" id="revealButton" onclick="revealTulip()">Click Me</button>
+        
+        <div class="tulip-container" id="tulipContainer">
+            <div class="tulip" id="tulip">
+                <div class="flower">
+                    <div class="petal petal-1"></div>
+                    <div class="petal petal-2"></div>
+                    <div class="petal petal-3"></div>
+                    <div class="petal petal-4"></div>
+                    <div class="petal petal-5"></div>
+                    <div class="petal petal-6"></div>
+                    <div class="center"></div>
+                </div>
+                <div class="stem"></div>
+                <div class="leaf leaf-left"></div>
+                <div class="leaf leaf-right"></div>
+            </div>
+        </div>
+
+        <div class="take-button" id="takeButton">
+            <button class="button" onclick="takeTulip()">Take the Tulip</button>
+        </div>
+
+        <div class="romantic-message" id="romanticMessage">
+            For you, my love 💕
+        </div>
+    </div>
+
+    <div class="hand-container" id="handContainer">
+        <div class="hand">
+            <div class="hand-palm"></div>
+            <div class="hand-thumb"></div>
+            <div class="hand-finger hand-finger-1"></div>
+            <div class="hand-finger hand-finger-2"></div>
+            <div class="hand-finger hand-finger-3"></div>
+        </div>
+    </div>
+
+    <div class="minigame-container" id="minigameContainer">
+        <div class="game-header">
+            <div class="game-title">Catch the Petals!</div>
+            <div class="game-stats">
+                <span>Score: <span id="gameScore">0</span></span>
+                <span>Time: <span id="gameTimer">30</span>s</span>
+            </div>
+        </div>
+        <div class="game-area" id="gameArea"></div>
+        <div class="game-end" id="gameEnd">
+            <div class="final-score">You caught <span id="finalScore">0</span> petals!</div>
+            <div class="final-message">You're amazing! Just like these beautiful tulips 🌷</div>
+            <button class="play-again-button" onclick="playAgain()">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        // Tulip color variations
+        const tulipColors = [
+            { color1: '#ff6b9d', color2: '#ff8fab', shadow: 'rgba(255, 107, 157, 0.3)' }, // Pink
+            { color1: '#ff4757', color2: '#ff6b81', shadow: 'rgba(255, 71, 87, 0.3)' }, // Red
+            { color1: '#ffd700', color2: '#ffed4e', shadow: 'rgba(255, 215, 0, 0.3)' }, // Yellow
+            { color1: '#a29bfe', color2: '#6c5ce7', shadow: 'rgba(162, 155, 254, 0.3)' }, // Purple
+            { color1: '#ffffff', color2: '#f8f9fa', shadow: 'rgba(255, 255, 255, 0.5)' }, // White
+            { color1: '#ff7675', color2: '#fd79a8', shadow: 'rgba(255, 118, 117, 0.3)' }, // Coral
+            { color1: '#fdcb6e', color2: '#e17055', shadow: 'rgba(253, 203, 110, 0.3)' }, // Orange
+            { color1: '#fd79a8', color2: '#fdcb6e', shadow: 'rgba(253, 121, 168, 0.3)' }  // Pink-Orange
+        ];
+
+        let currentTulipColor;
+        let gameScore = 0;
+        let gameTimer = 30;
+        let gameInterval;
+        let petalInterval;
+        let gameActive = false;
+
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Randomize tulip color
+        function randomizeTulipColor() {
+            currentTulipColor = tulipColors[Math.floor(Math.random() * tulipColors.length)];
+            document.documentElement.style.setProperty('--tulip-color-1', currentTulipColor.color1);
+            document.documentElement.style.setProperty('--tulip-color-2', currentTulipColor.color2);
+            document.documentElement.style.setProperty('--tulip-shadow', currentTulipColor.shadow);
+        }
+
+        function revealTulip() {
+            randomizeTulipColor();
+            const tulipContainer = document.getElementById('tulipContainer');
+            const revealButton = document.getElementById('revealButton');
+            const takeButton = document.getElementById('takeButton');
+            
+            tulipContainer.classList.add('show');
+            revealButton.classList.add('hidden');
+            
+            setTimeout(() => {
+                takeButton.classList.add('show');
+            }, 1000);
+        }
+
+        function takeTulip() {
+            const takeButton = document.getElementById('takeButton');
+            const handContainer = document.getElementById('handContainer');
+            const tulipContainer = document.getElementById('tulipContainer');
+            
+            takeButton.classList.remove('show');
+            
+            // Animate hand approaching
+            handContainer.classList.add('approaching');
+            
+            setTimeout(() => {
+                handContainer.classList.remove('approaching');
+                handContainer.classList.add('grabbing');
+                tulipContainer.classList.add('grabbed');
+            }, 1500);
+            
+            setTimeout(() => {
+                handContainer.classList.remove('grabbing');
+                handContainer.classList.add('retreating');
+            }, 2300);
+            
+            setTimeout(() => {
+                const romanticMessage = document.getElementById('romanticMessage');
+                romanticMessage.classList.add('show');
+                
+                setTimeout(() => {
+                    startMinigame();
+                }, 2000);
+            }, 4000);
+        }
+
+        function startMinigame() {
+            const container = document.querySelector('.container');
+            const minigameContainer = document.getElementById('minigameContainer');
+            const gameArea = document.getElementById('gameArea');
+            
+            container.style.display = 'none';
+            minigameContainer.classList.add('show');
+            
+            gameScore = 0;
+            gameTimer = 30;
+            gameActive = true;
+            
+            document.getElementById('gameScore').textContent = gameScore;
+            document.getElementById('gameTimer').textContent = gameTimer;
+            document.getElementById('gameEnd').classList.remove('show');
+            gameArea.innerHTML = '';
+            
+            // Start timer
+            gameInterval = setInterval(() => {
+                gameTimer--;
+                document.getElementById('gameTimer').textContent = gameTimer;
+                
+                if (gameTimer <= 0) {
+                    endGame();
+                }
+            }, 1000);
+            
+            // Start dropping petals
+            petalInterval = setInterval(() => {
+                if (gameActive) {
+                    createFallingPetal();
+                }
+            }, 800);
+            
+            // Create initial petals
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => createFallingPetal(), i * 500);
+            }
+        }
+
+        function createFallingPetal() {
+            const gameArea = document.getElementById('gameArea');
+            const petal = document.createElement('div');
+            petal.className = 'falling-petal';
+            
+            const leftPosition = Math.random() * (gameArea.offsetWidth - 30);
+            const fallDuration = 3 + Math.random() * 2;
+            
+            petal.style.left = leftPosition + 'px';
+            petal.style.animationDuration = fallDuration + 's';
+            petal.style.setProperty('--tulip-color-1', currentTulipColor.color1);
+            petal.style.setProperty('--tulip-color-2', currentTulipColor.color2);
+            petal.style.background = `linear-gradient(135deg, ${currentTulipColor.color1}, ${currentTulipColor.color2})`;
+            petal.style.boxShadow = `0 2px 8px ${currentTulipColor.shadow}`;
+            
+            gameArea.appendChild(petal);
+            
+            // Remove petal after it falls
+            setTimeout(() => {
+                if (petal.parentNode) {
+                    petal.remove();
+                }
+            }, fallDuration * 1000);
+        }
+
+        function catchPetal(event) {
+            if (!gameActive) return;
+            
+            const rect = document.getElementById('gameArea').getBoundingClientRect();
+            const x = (event.touches ? event.touches[0].clientX : event.clientX) - rect.left;
+            const y = (event.touches ? event.touches[0].clientY : event.clientY) - rect.top;
+            
+            const petals = document.querySelectorAll('.falling-petal');
+            petals.forEach(petal => {
+                const petalRect = petal.getBoundingClientRect();
+                const petalX = petalRect.left - rect.left + petalRect.width / 2;
+                const petalY = petalRect.top - rect.top + petalRect.height / 2;
+                
+                const distance = Math.sqrt(Math.pow(x - petalX, 2) + Math.pow(y - petalY, 2));
+                
+                if (distance < 40) {
+                    petal.remove();
+                    gameScore++;
+                    document.getElementById('gameScore').textContent = gameScore;
+                    
+                    // Create catch effect
+                    createCatchEffect(x, y);
+                }
+            });
+        }
+
+        function createCatchEffect(x, y) {
+            const gameArea = document.getElementById('gameArea');
+            const effect = document.createElement('div');
+            effect.className = 'catch-effect';
+            effect.style.left = (x - 25) + 'px';
+            effect.style.top = (y - 25) + 'px';
+            
+            // Create sparkles
+            for (let i = 0; i < 8; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                const angle = (i / 8) * Math.PI * 2;
+                const distance = 20;
+                sparkle.style.left = (25 + Math.cos(angle) * distance) + 'px';
+                sparkle.style.top = (25 + Math.sin(angle) * distance) + 'px';
+                effect.appendChild(sparkle);
+            }
+            
+            gameArea.appendChild(effect);
+            
+            // Create score popup
+            const scorePopup = document.createElement('div');
+            scorePopup.className = 'score-popup';
+            scorePopup.textContent = '+1';
+            scorePopup.style.left = x + 'px';
+            scorePopup.style.top = y + 'px';
+            gameArea.appendChild(scorePopup);
+            
+            setTimeout(() => {
+                effect.remove();
+                scorePopup.remove();
+            }, 1000);
+        }
+
+        function endGame() {
+            gameActive = false;
+            clearInterval(gameInterval);
+            clearInterval(petalInterval);
+            
+            document.getElementById('finalScore').textContent = gameScore;
+            document.getElementById('gameEnd').classList.add('show');
+        }
+
+        function playAgain() {
+            const container = document.querySelector('.container');
+            const minigameContainer = document.getElementById('minigameContainer');
+            const tulipContainer = document.getElementById('tulipContainer');
+            const revealButton = document.getElementById('revealButton');
+            const takeButton = document.getElementById('takeButton');
+            const romanticMessage = document.getElementById('romanticMessage');
+            const handContainer = document.getElementById('handContainer');
+            
+            // Reset everything
+            container.style.display = 'block';
+            minigameContainer.classList.remove('show');
+            tulipContainer.classList.remove('show', 'grabbed');
+            revealButton.classList.remove('hidden');
+            takeButton.classList.remove('show');
+            romanticMessage.classList.remove('show');
+            handContainer.className = 'hand-container';
+            
+            randomizeTulipColor();
+        }
+
+        // Event listeners for catching petals
+        const gameArea = document.getElementById('gameArea');
+        gameArea.addEventListener('click', catchPetal);
+        gameArea.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            catchPetal(e);
+        });
+
+        // Initialize
+        createParticles();
+        randomizeTulipColor();
+    </script>
+</body>
+</html>
