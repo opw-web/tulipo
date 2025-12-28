@@ -1,0 +1,460 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Playfair Display', serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.stars::before,
+.stars::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
+}
+
+.stars::before {
+    top: 20%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.stars::after {
+    top: 60%;
+    left: 80%;
+    animation-delay: 1.5s;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+}
+
+.container {
+    text-align: center;
+    z-index: 10;
+    position: relative;
+    padding: 20px;
+}
+
+.header {
+    margin-bottom: 60px;
+    animation: fadeInDown 1s ease-out;
+}
+
+.title {
+    font-size: 3.5rem;
+    color: #fff;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-style: italic;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.envelope-container {
+    perspective: 1000px;
+    margin: 40px auto;
+    width: 300px;
+    height: 200px;
+    cursor: pointer;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+.envelope {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease;
+}
+
+.envelope.opened {
+    transform: rotateY(180deg);
+}
+
+.envelope-front,
+.envelope-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 8px;
+}
+
+.envelope-front {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.envelope-back {
+    background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+    transform: rotateY(180deg);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.envelope-seal {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.envelope:hover .envelope-seal {
+    transform: scale(1.1);
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.heart {
+    font-size: 2.5rem;
+    color: #f5576c;
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.1); }
+    50% { transform: scale(1); }
+    75% { transform: scale(1.05); }
+}
+
+.tulip-container {
+    position: absolute;
+    width: 200px;
+    height: 300px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    transition: all 0.8s ease 0.4s;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.envelope.opened .tulip-container {
+    transform: translate(-50%, -180px) scale(1);
+    opacity: 1;
+}
+
+.tulip {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    transform-origin: center bottom;
+}
+
+.petal {
+    position: absolute;
+    width: 45px;
+    height: 75px;
+    background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 50%, #ffa8c5 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    transform-origin: center bottom;
+    opacity: 0;
+    transform: scale(0);
+    animation: bloom 1s ease-out forwards;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.petal-1 {
+    top: 5px;
+    left: 37px;
+    animation-delay: 0.5s;
+    transform: scale(0) rotate(-15deg);
+}
+
+.petal-2 {
+    top: 8px;
+    left: 62px;
+    animation-delay: 0.55s;
+    transform: scale(0) rotate(15deg);
+}
+
+.petal-3 {
+    top: 15px;
+    left: 52px;
+    animation-delay: 0.6s;
+    transform: scale(0) rotate(35deg);
+}
+
+.petal-4 {
+    top: 8px;
+    left: 18px;
+    animation-delay: 0.55s;
+    transform: scale(0) rotate(-15deg);
+}
+
+.petal-5 {
+    top: 15px;
+    left: 28px;
+    animation-delay: 0.6s;
+    transform: scale(0) rotate(-35deg);
+}
+
+.petal-6 {
+    top: 2px;
+    left: 45px;
+    animation-delay: 0.52s;
+    transform: scale(0) rotate(0deg);
+}
+
+@keyframes bloom {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.tulip-center {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: 25px;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    border-radius: 50%;
+    opacity: 0;
+    animation: centerBloom 0.8s ease-out 0.9s forwards;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes centerBloom {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+}
+
+.stem {
+    position: absolute;
+    top: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 150px;
+    background: linear-gradient(to bottom, #4a7c59 0%, #5a9d6e 100%);
+    border-radius: 4px;
+    opacity: 0;
+    transform-origin: top center;
+    animation: stemGrow 0.6s ease-out 0.3s forwards;
+}
+
+@keyframes stemGrow {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) scaleY(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) scaleY(1);
+    }
+}
+
+.leaf {
+    position: absolute;
+    width: 40px;
+    height: 25px;
+    background: linear-gradient(135deg, #4a7c59 0%, #6bb87d 100%);
+    border-radius: 0 100% 0 100%;
+    opacity: 0;
+    transform-origin: left center;
+    animation: leafGrow 0.5s ease-out forwards;
+}
+
+.leaf-1 {
+    top: 180px;
+    left: 60px;
+    animation-delay: 0.5s;
+    transform: rotate(-20deg) scale(0);
+}
+
+.leaf-2 {
+    top: 210px;
+    left: 90px;
+    animation-delay: 0.7s;
+    transform: rotate(25deg) scale(0);
+}
+
+@keyframes leafGrow {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.instruction {
+    margin-top: 40px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    font-style: italic;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease-out 0.5s both;
+    transition: opacity 0.3s ease;
+}
+
+.instruction.hidden {
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .title {
+        font-size: 2.5rem;
+    }
+    
+    .subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .envelope-container {
+        width: 250px;
+        height: 170px;
+    }
+    
+    .tulip-container {
+        width: 180px;
+        height: 250px;
+    }
+    
+    .tulip {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .petal {
+        width: 40px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 2rem;
+    }
+    
+    .envelope-container {
+        width: 220px;
+        height: 150px;
+    }
+    
+    .envelope-seal {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .heart {
+        font-size: 2rem;
+    }
+    
+    .tulip-container {
+        width: 150px;
+        height: 220px;
+    }
+    
+    .tulip {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .petal {
+        width: 35px;
+        height: 50px;
+    }
+    
+    .stem {
+        height: 120px;
+    }
+}
+
